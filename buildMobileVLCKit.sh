@@ -8,7 +8,7 @@ BUILD_DEVICE=yes
 BUILD_SIMULATOR=yes
 BUILD_STATIC_FRAMEWORK=no
 SDK_VERSION=`xcrun --sdk iphoneos --show-sdk-version`
-SDK_MIN=7.0
+SDK_MIN=10.0
 VERBOSE=no
 DEBUG=no
 CONFIGURATION="Release"
@@ -95,7 +95,7 @@ do
              TVOS=yes
              BITCODE=yes
              SDK_VERSION=`xcrun --sdk appletvos --show-sdk-version`
-             SDK_MIN=9.0
+             SDK_MIN=10.0
              OSVERSIONMINCFLAG=mtvos-version-min
              OSVERSIONMINLDFLAG=tvos_version_min
              ;;
@@ -103,7 +103,7 @@ do
              MACOS=yes
              BITCODE=no
              SDK_VERSION=`xcrun --sdk macosx --show-sdk-version`
-             SDK_MIN=10.9
+             SDK_MIN=10.12
              OSVERSIONMINCFLAG=mmacosx-version-min
              OSVERSIONMINLDFLAG=macosx_version_min
              BUILD_DEVICE=yes
