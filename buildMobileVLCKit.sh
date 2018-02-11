@@ -17,7 +17,7 @@ SKIPLIBVLCCOMPILATION=no
 SCARY=yes
 TVOS=no
 MACOS=no
-BITCODE=no
+BITCODE=yes
 OSVERSIONMINCFLAG=miphoneos-version-min
 OSVERSIONMINLDFLAG=ios_version_min
 ROOT_DIR=empty
@@ -47,7 +47,6 @@ OPTIONS
    -x       Build for macOS / Mac OS X
    -w       Build a limited stack of non-scary libraries only
    -y       Build universal static libraries
-   -b       Enable bitcode
    -a       Build framework for specific arch (all|x86_64|aarch64)
 EOF
 }
@@ -91,9 +90,6 @@ do
              BUILD_SIMULATOR=yes
              BUILD_STATIC_FRAMEWORK=yes
              FARCH=$OPTARG
-             ;;
-         b)
-             BITCODE=yes
              ;;
          t)
              TVOS=yes
