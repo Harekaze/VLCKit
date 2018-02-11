@@ -23,7 +23,7 @@ OSVERSIONMINLDFLAG=ios_version_min
 ROOT_DIR=empty
 FARCH="all"
 
-TESTEDHASH="origin/master" # Follow vlc-3.0.git HEAD
+TESTEDHASH="787c1cca0bbddb2abc55b7736deed2a4ef196ded"
 
 if [ -z "$MAKE_JOBS" ]; then
     CORE_COUNT=`sysctl -n machdep.cpu.core_count`
