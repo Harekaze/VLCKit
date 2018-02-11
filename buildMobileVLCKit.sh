@@ -48,7 +48,7 @@ OPTIONS
    -w       Build a limited stack of non-scary libraries only
    -y       Build universal static libraries
    -b       Enable bitcode
-   -a       Build framework for specific arch (all|i386|x86_64|armv7|armv7s|aarch64)
+   -a       Build framework for specific arch (all|x86_64|aarch64)
 EOF
 }
 
@@ -149,7 +149,7 @@ get_arch() {
 }
 
 is_simulator_arch() {
-    if [ "$1" = "i386" -o "$1" = "x86_64" ];then
+    if [ "$1" = "x86_64" ];then
         return 0
     else
         return 1
@@ -184,9 +184,9 @@ buildxcodeproj()
     if [ "$FARCH" = "all" ];then
         if [ "$TVOS" != "yes" ]; then
             if [ "$PLATFORM" = "iphonesimulator" ]; then
-                architectures="i386 x86_64"
+                architectures="x86_64"
             else
-                architectures="armv7 armv7s arm64"
+                architectures="arm64"
             fi
         else
             if [ "$PLATFORM" = "appletvsimulator" ]; then
@@ -534,11 +534,7 @@ buildLibVLC() {
         SCARYFLAG="--disable-dca --disable-dvbpsi --disable-avcodec --disable-avformat --disable-zvbi --enable-vpx"
     fi
 
-    if [ "$TVOS" != "yes" -a \( "$ARCH" = "armv7" -o "$ARCH" = "armv7s" \) ];then
-        export ac_cv_arm_neon=yes
-    else
-        export ac_cv_arm_neon=no
-    fi
+    export ac_cv_arm_neon=no
 
     # Available but not authorized
     export ac_cv_func_daemon=no
@@ -771,29 +767,25 @@ buildMobileKit() {
                     buildLibVLC $VERBOSE $DEBUG $SCARY $BITCODE "x86_64" $TVOS $MACOS $SDK_VERSION "OS"
                 else
                     if [ "$PLATFORM" = "iphonesimulator" ]; then
-                        buildLibVLC $VERBOSE $DEBUG $SCARY $BITCODE "i386" $TVOS $MACOS $SDK_VERSION "Simulator"
                         buildLibVLC $VERBOSE $DEBUG $SCARY $BITCODE "x86_64" $TVOS $MACOS $SDK_VERSION "Simulator"
                     else
-                        buildLibVLC $VERBOSE $DEBUG $SCARY $BITCODE "armv7" $TVOS $MACOS $SDK_VERSION "OS"
-                        buildLibVLC $VERBOSE $DEBUG $SCARY $BITCODE "armv7s" $TVOS $MACOS $SDK_VERSION "OS"
                         buildLibVLC $VERBOSE $DEBUG $SCARY $BITCODE "aarch64" $TVOS $MACOS $SDK_VERSION "OS"
                     fi
                 fi
             fi
         else
-            if [ "$FARCH" != "x86_64" -a "$FARCH" != "aarch64" -a "$FARCH" != "i386" \
-              -a "$FARCH" != "armv7" -a "$FARCH" != "armv7s" ];then
+            if [ "$FARCH" != "x86_64" -a "$FARCH" != "aarch64" ];then
                 echo "*** Framework ARCH: ${FARCH} is invalid ***"
                 exit 1
             fi
 
             local buildPlatform=""
             if [ "$PLATFORM" = "iphonesimulator" ]; then
-                if [ "$FARCH" == "x86_64" -o "$FARCH" == "i386" ];then
+                if [ "$FARCH" == "x86_64" ];then
                     buildPlatform="Simulator"
                 fi
             else
-                if [ "$FARCH" == "armv7" -o "$FARCH" == "armv7s" -o "$FARCH" == "aarch64" ];then
+                if [ "$FARCH" == "aarch64" ];then
                     buildPlatform="OS"
                 fi
             fi
@@ -893,7 +885,6 @@ build_universal_static_lib() {
     fi
 
     VLCMODULES=""
-    VLCNEONMODULES=""
     SIMULATORARCHS=""
     CONTRIBLIBS=""
     DEVICEARCHS=""
@@ -925,20 +916,6 @@ build_universal_static_lib() {
             spopd # $actual_arch/lib/vlc/plugins
         fi
 
-        if [ "$OSSTYLE" != "AppleTV" -a \
-            \( "$FARCH" = "all" -o "$FARCH" = "armv7" -o "$FARCH" = "armv7s" \) ]; then
-            # collect ARMv7/s specific neon modules
-            if [ "$FARCH" = "all" ];then
-                spushd armv7/lib/vlc/plugins
-            else
-                spushd $FARCH/lib/vlc/plugins
-            fi
-            for i in `ls *.a | grep neon`
-            do
-                VLCNEONMODULES="$i $VLCNEONMODULES"
-            done
-            spopd # armv7/lib/vlc/plugins
-        fi
         spopd # vlc-install-"$OSSTYLE"OS
     fi
 
@@ -1005,22 +982,6 @@ build_universal_static_lib() {
         do
             doContribLipo $i $OSSTYLE
         done
-
-        if [ "$OSSTYLE" != "AppleTV" ]; then
-            # lipo the remaining NEON plugins
-            DEVICEARCHS=""
-            for i in armv7 armv7s; do
-                local iarch="`get_arch $i`"
-                if [ "$FARCH" == "all" -o "$FARCH" = "$iarch" ];then
-                    DEVICEARCHS="$DEVICEARCHS $iarch"
-                fi
-            done
-            SIMULATORARCHS=""
-            for i in $VLCNEONMODULES
-            do
-                doVLCLipo "vlc/plugins/" $i "yes" $OSSTYLE
-            done
-        fi
     fi
 
     # create module list
@@ -1049,22 +1010,6 @@ build_universal_static_lib() {
         LDFLAGS+="\$(PROJECT_DIR)/libvlc/vlc/install-"$OSSTYLE"/plugins/$file "
         info "...$entryname"
     done;
-
-    if [ "$OSSTYLE" != "AppleTV" ]; then
-        BUILTINS+="#ifdef __arm__\n"
-        DEFINITIONS+="#ifdef __arm__\n"
-        for file in $VLCNEONMODULES
-        do
-            symbols=$(nm -g -arch $actual_arch install-$OSSTYLE/plugins/$file)
-            entryname=$(get_symbol "$symbols" _)
-            DEFINITIONS+="int $entryname (int (*)(void *, void *, int, ...), void *);\n";
-            BUILTINS+=" $entryname,\n"
-            LDFLAGS+="\$(PROJECT_DIR)/libvlc/vlc/install-"$OSSTYLE"/plugins/$file "
-            info "...$entryname"
-        done;
-        BUILTINS+="#endif\n"
-        DEFINITIONS+="#endif\n"
-    fi
 
     BUILTINS="$BUILTINS NULL\n};\n"
 
