@@ -398,15 +398,7 @@ buildLibVLC() {
         export ASCPP="xcrun as"
     fi
 
-    if [ "$TVOS" = "yes" ]; then
-        CUSTOMOSOPTIONS="--disable-libarchive"
-    else
-        if [ "$MACOS" = "yes" ]; then
-            CUSTOMOSOPTIONS="--disable-fontconfig --disable-bghudappkit --disable-twolame --disable-microdns --disable-SDL --disable-SDL_image --disable-cddb --disable-bluray"
-        else
-            CUSTOMOSOPTIONS=""
-        fi
-    fi
+    CUSTOMOSOPTIONS="--disable-libarchive --disable-fontconfig --disable-bghudappkit --disable-twolame --disable-microdns --disable-SDL --disable-SDL_image --disable-cddb --disable-bluray"
 
     if [ "${TARGET}" = "x86_64-apple-darwin14" ];then
         BUILD=""
@@ -464,7 +456,7 @@ buildLibVLC() {
         --disable-sdl \
         --disable-SDL_image \
         --disable-iconv \
-        --enable-zvbi \
+        --disable-zvbi \
         --disable-kate \
         --disable-caca \
         --disable-gettext \
@@ -473,7 +465,7 @@ buildLibVLC() {
         --disable-gme \
         --disable-srt \
         --disable-tremor \
-        --enable-vorbis \
+        --disable-vorbis \
         --disable-sidplay2 \
         --disable-samplerate \
         --disable-goom \
@@ -483,10 +475,11 @@ buildLibVLC() {
         --disable-libmpeg2 \
         --disable-chromaprint \
         --disable-mad \
+        --disable-live555 \
         --enable-fribidi \
         --enable-libxml2 \
         --enable-freetype2 \
-        --enable-ass \
+        --disable-ass \
         --disable-fontconfig \
         --disable-gpg-error \
         --disable-vncclient \
@@ -496,8 +489,9 @@ buildLibVLC() {
         --disable-protobuf \
         --disable-aribb24 \
         --disable-aribb25 \
-        --enable-vpx \
-        --enable-libdsm \
+        --disable-archive \
+        --disable-vpx \
+        --disable-libdsm \
         --enable-libplacebo \
         --disable-sparkle \
         --disable-growl \
@@ -505,7 +499,7 @@ buildLibVLC() {
         --disable-ncurses \
         --disable-asdcplib \
         ${CUSTOMOSOPTIONS} \
-        --enable-taglib > ${out}
+        --disable-taglib > ${out}
 
     echo "EXTRA_CFLAGS += ${EXTRA_CFLAGS}" >> config.mak
     echo "EXTRA_LDFLAGS += ${EXTRA_LDFLAGS}" >> config.mak
@@ -531,7 +525,7 @@ buildLibVLC() {
     if [ "$SCARY" = "yes" ]; then
         SCARYFLAG="--enable-dvbpsi --enable-avcodec --disable-vpx"
     else
-        SCARYFLAG="--disable-dca --disable-dvbpsi --disable-avcodec --disable-avformat --disable-zvbi --enable-vpx"
+        SCARYFLAG="--disable-dca --disable-dvbpsi --disable-avcodec --disable-avformat --disable-zvbi --disable-vpx"
     fi
 
     export ac_cv_arm_neon=no
@@ -555,7 +549,8 @@ buildLibVLC() {
         --disable-macosx-qtkit \
         --disable-macosx-avfoundation \
         --disable-shared \
-        --enable-opus \
+        --disable-archive \
+        --disable-opus \
         --disable-faad \
         --disable-lua \
         --disable-a52 \
@@ -568,11 +563,12 @@ buildLibVLC() {
         --disable-nls \
         --disable-sse \
         --disable-notify \
-        --enable-live555 \
-        --enable-realrtsp \
+        --disable-live555 \
+        --disable-realrtsp \
         --enable-swscale \
         --disable-projectm \
         --enable-libass \
+        --disable-aribsub \
         --enable-libxml2 \
         --disable-goom \
         --disable-dvdread \
@@ -580,20 +576,21 @@ buildLibVLC() {
         --disable-bluray \
         --disable-linsys \
         --disable-libva \
+        --disable-libcddb \
         --disable-gme \
         --disable-tremor \
-        --enable-vorbis \
+        --disable-vorbis \
         --disable-fluidsynth \
         --disable-jack \
         --disable-pulse \
         --disable-mtp \
-        --enable-ogg \
-        --enable-speex \
-        --enable-theora \
-        --enable-flac \
+        --disable-ogg \
+        --disable-speex \
+        --disable-theora \
+        --disable-flac \
         --disable-screen \
         --enable-freetype \
-        --enable-taglib \
+        --disable-taglib \
         --disable-mmx \
         --disable-sparkle \
         --disable-addonmanagermodules \
