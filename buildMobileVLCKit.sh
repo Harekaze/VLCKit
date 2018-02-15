@@ -483,7 +483,7 @@ buildLibVLC() {
         --disable-lua \
         --disable-luac \
         --disable-protobuf \
-        --disable-aribb24 \
+        --enable-aribb24 \
         --disable-aribb25 \
         --disable-archive \
         --disable-vpx \
@@ -564,7 +564,7 @@ buildLibVLC() {
         --enable-swscale \
         --disable-projectm \
         --enable-libass \
-        --disable-aribsub \
+        --enable-aribsub \
         --enable-libxml2 \
         --disable-goom \
         --disable-dvdread \
