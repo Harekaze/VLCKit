@@ -1,0 +1,29 @@
+From 90d99e7d7e08bf5a5cb501189c28f61492b0170e Mon Sep 17 00:00:00 2001
+From: Yuki MIZUNO <mizuyuu0904@gmail.com>
+Date: Sun, 11 Feb 2018 22:04:56 +0900
+Subject: [PATCH] continue active playback on external screen
+
+---
+ modules/video_output/ios.m | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/modules/video_output/ios.m b/modules/video_output/ios.m
+index 655381a8b0..342ebb5d96 100644
+--- a/modules/video_output/ios.m
++++ b/modules/video_output/ios.m
+@@ -692,7 +692,11 @@ - (void)applicationStateChanged:(NSNotification *)notification
+     if ([[notification name] isEqualToString:UIApplicationWillResignActiveNotification]
+         || [[notification name] isEqualToString:UIApplicationDidEnterBackgroundNotification]
+         || [[notification name] isEqualToString:UIApplicationWillTerminateNotification])
+-        _appActive = NO;
++        if ([[UIScreen screens] count] == 1) {
++            _appActive = NO;
++        } else {
++            _appActive = YES;
++        }
+     else
+         _appActive = YES;
+     }
+-- 
+2.14.3 (Apple Git-98)
+
