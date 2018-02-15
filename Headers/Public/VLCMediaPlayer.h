@@ -587,6 +587,37 @@ extern NSString *const VLCTitleDescriptionIsMenu;
  */
 @property (readwrite) NSInteger currentAudioPlaybackDelay;
 
+#if TARGET_OS_IPHONE
+
+#pragma mark -
+#pragma mark text renderer functionality
+
+/**
+ * set text renderer font size
+ * \param fontSize value
+ */
+- (void)setTextRendererFontSize:(NSNumber *)fontSize;
+
+/**
+ * set text renderer font
+ * \param fontname font name
+ */
+- (void)setTextRendererFont:(NSString *)fontname;
+
+/**
+ * set text renderer font color
+ * \param fontColor color
+ */
+- (void)setTextRendererFontColor:(NSNumber *)fontColor;
+
+/**
+ * set text renderer font force bold
+ * \param fontForceBold value
+ */
+- (void)setTextRendererFontForceBold:(NSNumber *)fontForceBold;
+
+#endif
+
 #pragma mark -
 #pragma mark equalizer
 
