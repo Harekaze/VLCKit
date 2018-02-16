@@ -1,5 +1,7 @@
 # VLCKit
 
+[![Travis](https://img.shields.io/travis/Harekaze/VLCKit.svg?maxAge=2592000&style=flat-square)](https://travis-ci.org/Harekaze/VLCKit)
+
 **VLCKit** is a generic multimedia library for any audio or video playback needs on macOS, iOS and tvOS.
 
 It is based on **libVLC**, the engine of the popular media player *VLC*.
