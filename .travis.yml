@@ -2,5 +2,5 @@ language: objective-c
 osx_image: xcode9.2
 before_install:
   - brew update
-  - brew install automake m4 libtool pkg-config cmake yasm xz bison
+  - brew install m4 libtool yasm xz bison
 script: ./buildMobileVLCKit.sh -f
