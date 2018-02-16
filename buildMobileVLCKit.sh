@@ -472,8 +472,8 @@ buildLibVLC() {
         --disable-chromaprint \
         --disable-mad \
         --disable-live555 \
-        --enable-fribidi \
-        --enable-libxml2 \
+        --disable-fribidi \
+        --disable-libxml2 \
         --enable-freetype2 \
         --disable-ass \
         --disable-fontconfig \
@@ -488,14 +488,77 @@ buildLibVLC() {
         --disable-archive \
         --disable-vpx \
         --disable-libdsm \
-        --enable-libplacebo \
+        --disable-libplacebo \
         --disable-sparkle \
         --disable-growl \
         --disable-breakpad \
         --disable-ncurses \
         --disable-asdcplib \
         ${CUSTOMOSOPTIONS} \
-        --disable-taglib > ${out}
+        --disable-a52 \
+        --disable-aom \
+        --disable-bpg \
+        --disable-crystalhd \
+        --disable-d3d11 \
+        --disable-d3d9 \
+        --disable-daala \
+        --disable-dca \
+        --disable-directx \
+        --disable-dshow \
+        --disable-dvdcss \
+        --disable-dvdnav \
+        --disable-dvdread \
+        --disable-ebml \
+        --disable-faad2 \
+        --disable-ffi \
+        --disable-flac \
+        --disable-fluid \
+        --disable-fluidlite \
+        --disable-gcrypt \
+        --disable-glew \
+        --disable-glib \
+        --disable-gmp \
+        --disable-gsm \
+        --disable-harfbuzz \
+        --disable-jack \
+        --disable-jpeg \
+        --disable-lame \
+        --disable-libtasn1 \
+        --disable-matroska \
+        --disable-mfx \
+        --disable-modplug \
+        --disable-mpg123 \
+        --disable-mysofa \
+        --disable-nettle \
+        --disable-nfs \
+        --disable-ogg \
+        --disable-openjpeg \
+        --disable-opus \
+        --disable-png \
+        --disable-postproc \
+        --disable-projectM \
+        --disable-pthreads \
+        --disable-qt \
+        --disable-qtsvg \
+        --disable-regex \
+        --disable-shout \
+        --disable-soxr \
+        --disable-spatialaudio \
+        --disable-speex \
+        --disable-speexdsp \
+        --disable-sqlite \
+        --disable-ssh2 \
+        --disable-theora \
+        --disable-tiff \
+        --disable-tiger \
+        --disable-x264 \
+        --disable-x265 \
+        --disable-xau \
+        --disable-xcb-proto \
+        --disable-xcb \
+        --disable-xorg-macros \
+        --disable-xproto \
+        --disable-taglib > ${out} 2> ${out}
 
     echo "EXTRA_CFLAGS += ${EXTRA_CFLAGS}" >> config.mak
     echo "EXTRA_LDFLAGS += ${EXTRA_LDFLAGS}" >> config.mak
@@ -550,7 +613,7 @@ buildLibVLC() {
         --disable-faad \
         --disable-lua \
         --disable-a52 \
-        --enable-fribidi \
+        --disable-fribidi \
         --disable-qt --disable-skins2 \
         --disable-vcd \
         --disable-vlc \
@@ -563,9 +626,9 @@ buildLibVLC() {
         --disable-realrtsp \
         --enable-swscale \
         --disable-projectm \
-        --enable-libass \
+        --disable-libass \
         --enable-aribsub \
-        --enable-libxml2 \
+        --disable-libxml2 \
         --disable-goom \
         --disable-dvdread \
         --disable-dvdnav \
