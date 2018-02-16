@@ -221,7 +221,7 @@ ROOT_DIR=`pwd`
 spopd
 
 VLCROOT=${ROOT_DIR}/libvlc/vlc
-export PATH="${VLCROOT}/extras/tools/build/bin:${VLCROOT}/contrib/${TARGET}/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+export PATH="/usr/local/opt/m4/bin:/usr/local/opt/bison/bin/:/usr/local/bin:${VLCROOT}/extras/tools/build/bin:${VLCROOT}/contrib/${TARGET}/bin:/usr/bin:/bin:/usr/sbin:/sbin:$PATH"
 
 info "Preparing build dirs"
 
@@ -267,6 +267,12 @@ fi
 
 if [ "$SKIPLIBVLCCOMPILATION" != "yes" ]; then
     info "Building tools"
+    mkdir -p ${VLCROOT}/extras/tools/build/bin
+    which glibtool > /dev/null
+    if [ "$?" -eq 0 ]; then
+      ln -s $(which glibtool) ${VLCROOT}/extras/tools/build/bin/libtool
+      ln -s $(which glibtoolize) ${VLCROOT}/extras/tools/build/bin/libtoolize
+    fi
     spushd ${ROOT_DIR}/libvlc/vlc/extras/tools
     ./bootstrap
     make
